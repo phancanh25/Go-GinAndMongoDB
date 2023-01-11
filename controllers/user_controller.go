@@ -38,9 +38,9 @@ func CreateUser() gin.HandlerFunc {
 
 		newUser := models.User{
 			Id:       primitive.NewObjectID(),
-			Name:     user.Name,
-			Location: user.Location,
-			Title:    user.Title,
+			Username: user.Username,
+			Email:    user.Email,
+			Phone:    user.Phone,
 		}
 
 		result, err := userCollection.InsertOne(ctx, newUser)
@@ -92,7 +92,7 @@ func EditAUser() gin.HandlerFunc {
 			return
 		}
 
-		update := bson.M{"name": user.Name, "location": user.Location, "title": user.Title}
+		update := bson.M{"username": user.Username, "email": user.Email, "phone": user.Phone}
 		result, err := userCollection.UpdateOne(ctx, bson.M{"id": objId}, bson.M{"$set": update})
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
